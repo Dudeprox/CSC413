@@ -80,12 +80,12 @@ We experimented with a few different values for sequence lengths. We judged the 
 
 ### Final set of Hyperparameters:
 
-Learning rate (alpha) - 0.006
-Weight Decay - 0.0
-Batch Size - 800
-Number of Epochs - 20
-Embedding Dimensions - 100
-Hidden Dimensions - 128
+* Learning rate (alpha) - 0.006
+* Weight Decay - 0.0
+* Batch Size - 800
+* Number of Epochs - 20
+* Embedding Dimensions - 100
+* Hidden Dimensions - 128
 
 Below is a table that summarizes the various combinations of hyperparameter values that we used while training the model. The code file also demonstrates a few “bad” combinations of  hyperparameter values” to train the model and the corresponding output. At each iteration of this process, we adjusted our values according to the results of the previously tried hyperparameter values.
 
