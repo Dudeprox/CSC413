@@ -121,7 +121,7 @@ https://www.kaggle.com/code/masrur007/friends-script-generation-using-rnn-lstm-n
 * Verma, S. (2018, April 27). Generating a TV Script Using Recurrent Neural Networks [Blog post]. Medium. 
 https://shiva-verma.medium.com/generating-a-tv-script-using-recurrent-neural-networks-dd0a645e97e7
 * Analatriste, C. (2017). Seinfeld Lost Episode [GitHub repository]. GitHub. 
-* https://github.com/cptanalatriste/seinfeld-lost-episode
+https://github.com/cptanalatriste/seinfeld-lost-episode
 * Gaerlan, M. (2020). SpongeBob SquarePants Completed Transcripts [Data set]. Kaggle. 
 https://www.kaggle.com/datasets/mikhailgaerlan/spongebob-squarepants-completed-transcripts?resource=download
 
