@@ -14,6 +14,8 @@ The source of the dataset was Kaggle. This dataset contained scripts from nearly
 
 ## Data Summary:
 
+We used a total of 200 episodes. We have 120 episodes in the training set, 40 in the validation set and 40 in the test set. Our vocabulary size (or the number of unique words) in the training and validation set is 13456. We have an average of 2696 words per episode (or per text file). We have an average of 16 words in each line or dialogue. This data summary helps us visualize the data that our model deals with. Since there is an average of 16 words per line we would want our model to generate scripts with an average sentence/dialogue length of 16 words. Since our vocabulary consists of 13456 unique words it’s an indicator of the range of different words we could possibly see in our generated script. This may seem like a small number but we need to remember that these words have to stem from the words commonly seen in SpongeBob episodes. We also see that the average length of an episode or script is 2696 words so while generating a script our word limit should be around this number. These summary statistics help us in deciding certain parameter values of our model too. For example, since we want to generate a script, we need our sentences or dialogues to make sense and be coherent with each other. Therefore it helped us decide that we should stick to a sequence length of 8 in order for our model to learn efficiently and generate a good quality script. Similarly, we also looked at the punctuation that appears in our dataset and that was an indicator of the punctuation that our generated script should also contain.
+
 ## Data Transformation:
 
 As mentioned before our source data was text files that contained the scripts from the SpongeBob episodes. Below, we’ll highlight the data transformation process that essentially converted these text files into input that could be passed to the model for training.
@@ -86,6 +88,8 @@ We experimented with a few different values for sequence lengths. We judged the 
 * Number of Epochs - 20
 * Embedding Dimensions - 100
 * Hidden Dimensions - 128
+
+We realize that our validation accuracy becomes a constant value, or enters a plateau around the 4000-5000 iterations mark. However, in the case of our model and problem statement, it makes more sense to keep training it for slightly longer as we want it to generate good quality scripts by being able to look at more data continuously and learn from it. This is because our loss keeps going down and our training accuracy is still going up which might be better quantitative measures to analyze. We also realize that the validation accuracy cannot be higher than a certain value due to a huge vocabulary size. The huge vocabulary size makes the probability of the next predicted word to be extremely small when we use softmax in our model. Moreover, the vocabulary from the validatios set constitutes a smaller portion of our combined vocabulary that our model uses to train on which again contributes to the fact that our model will have a low validation accuracy no matter what.
 
 Below is a table that summarizes the various combinations of hyperparameter values that we used while training the model. The code file also demonstrates a few “bad” combinations of  hyperparameter values” to train the model and the corresponding output. At each iteration of this process, we adjusted our values according to the results of the previously tried hyperparameter values.
 
