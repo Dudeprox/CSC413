@@ -13,7 +13,9 @@ The architecture of this model is shown visually in Figure 1 below. The forward 
 3. The **dropout layer** is a regularization technique used to prevent the model from overfitting. It works by randomly dropping out some activations during training, enabling the model to learn more robust features and become less sensitive to input noise. We used a dropout value of 0.3, meaning each of the activations in this layer have a 30% chance of being dropped out.
 4. The final fully connected *linear layer* uses a linear transformation to map the output of the previous layer to an output space with the size of our vocabulary. The output of this layer, in addition to the softmax activation in script generation, is used to obtain the final prediction from a distribution of probabilities.
 
-Figure 1 The architecture of the forward pass for the Spongebob LSTM model. The input is an 8-gram sequence, and the output is a vector representing the probability distribution over each word in the vocabulary, given the input sequence.
+<img width="643" alt="image" src="https://user-images.githubusercontent.com/56453971/232602341-1d71a86e-5613-427a-87aa-f066fa2c1d9e.png">
+
+**Figure 1:** The architecture of the forward pass for the Spongebob LSTM model. The input is an 8-gram sequence, and the output is a vector representing the probability distribution over each word in the vocabulary, given the input sequence.
 
 ## Model Parameters:
 
@@ -137,6 +139,22 @@ Below is a table that summarizes the various combinations of hyperparameter valu
 
 ## Justification of Results:
 
+### Problem Complexity: 
+
+The task of the implemented RNN model is to generate a script for a Spongebob TV episode. This involves addressing complex dialogues such as recognizing humour, references to other characters, speech patterns, actions, and more. One of the challenging aspects of the model is understanding the context and tone of each dialogue in the script. TV show scripts typically involve multiple character interactions, with each interaction being unique to each character's personality traits and complex relationships with other characters. This is significantly difficult for the model to accurately capture. Furthermore, TV show scripts often have multiple story arcs and a specific narrative flow that the model must learn to create a structured and relevant flow for the characters and their arcs. This can be particularly challenging for the model to learn, showing the complexity of the generation problem. The model needs to be able to create dependencies based on the previous episodes, such as connecting story arcs and dialogue from previous episodes into the generated episode. These dependencies add to the complexity of the generation problem.
+
+### Data Availability: 
+
+There is a reasonable amount of data available to train the model. As listed in the data summary, a total of 120 episodes worth of scripts were used to train the model. The quality of the data was fair, with the scripts organized well and separated by new lines. Splitting data at newlines and punctuation would exclude those characters from the data. Initially, we made this mistake and the model would result in generating one lengthy line as the script and completely excluding new line separations. It is obvious we need the model to learn when to appropriately include newlines and punctuation, therefore during pre-processing we needed to readjust and organize the data such that we include those characters. The punctuation and the new lines are required for the model to learn when certain script lines end and a different character’s line starts.
+
+### Model Training: 
+
+Implementing early stopping allowed the training accuracy to not be very high and balanced it with validation accuracy, making the model more generalized. The set of hyperparameters that were analyzed and modified was the learning rate (alpha), weight decay, number of epochs, batch size, sequence length, number of stacked LSTMs, embedding dimensions and hidden dimensions. We tuned our hyperparameters based on the validation accuracy and loss for each set of hyperparameters that our model trained on, selecting the final set of parameters as; Learning rate (alpha) - 0.006, Weight Decay - 0.0, Batch Size - 800, Number of Epochs - 20, Embedding Dimensions - 100, Hidden Dimensions - 128. Achieving a good accuracy allowed the model to learn better by generalizing, and effectively structure the script, in terms of punctuation and context. For instance, using a higher number of 20 epochs allows the model to learn that actions are enclosed by square brackets, as opposed to not closing brackets with a lower number of 5 epochs. The dialogue of characters would also become more coherent as well.
+
+### Results and Analysis:
+
+The first line of the generated script is not coherent and does not form a structure of a typical script. After the first line, the model is able to form a script with reasonable structure and dialogue. This is likely due to the choice of the keyword, the model is unable to predict whether it should start from a script line, dialogue, or action, so the model generates the likely words before moving on to a script. The generated script is reasonably generated with good structure. Each character is named and followed by a colon before their dialogue and actions are generated. Hyperparameter tuning allowed the model to effectively place actions between square brackets and dialogue outside them. It is not always perfect, but it is consistent enough to be a reasonably structured script. The punctuation is also used appropriately, within sentences to construct a reasonable dialogue. The script is also more coherent, with most characters seeming to be conversing with other characters, about relevant topics. The conversations make sense most of the time, but occasionally some characters may appear to be conversing with themselves or referring to themselves. Other than some small discrepancies, character dialogue is reasonable. The model is also able to distinguish between the personalities of certain characters. For example, SpongeBob is a cheery character so he is laughing frequently, whereas Squidward is pessimistic and miserable, which is apparent in his tone and dialogue in the generated scripts. Overall, the model does a well enough job of recognizing the differences between characters. The model also only uses characters' names that are part of the show, to associate dialogue, therefore has an understanding of which characters frequently engage in dialogue. The end of the script usually appears cut off, and incomplete which is likely due to the length inputted. The model is unable to effectively conclude the episode and seems to create an infinite script. A hypothesis for this outcome could be, the model needs a specific length to conclude an episode, but since multiple episodes range in length and some episodes don't even indicate an ending, it could be very difficult for the model to mention an ending. 
+
 ## Ethical Considerations:
 
 ## Authors:
@@ -147,6 +165,11 @@ Below is a table that summarizes the various combinations of hyperparameter valu
 * Worked on creating the RNN model and training it.
 * Hyperparameter tuning while training the model.
 * In the write-up I worked on Data Source, Data Summary, Data Transformation, Data Split, Hyperparameter Tuning.
+
+#### Muhammad Idrees
+
+* Worked on the script generation function.
+* In the write-up I worked on Justification of Results.
 
 ## Advanced Concept:
 
