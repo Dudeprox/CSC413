@@ -1,12 +1,48 @@
-# CSC413
+# CSC413 Final Project
 
 ## Introduction:
 
+For this project, our task was to generate a script that mimics the style and humour of the popular animated TV show Spongebob Squarepants. We accomplished this task by utilizing a long-short-term-memory (LTSM) network. LSTMs are designed to capture long-term dependencies in sequential data, and can effectively generate scripts coherent text that follows the grammar and syntax of natural language.
+The input to our model is a starting word and a specified length for the generated script. The starting word serves as a prompt for the model to generate the script from, and the length indicates how many words the model should produce (where punctuation marks also count as words). With these inputs, the model was able to output a generated script with the desired length and the first word being the prompt given to it.
+
 ## Model Figure:
+
+The architecture of this model is shown visually in Figure 1 below. The forward pass of the model is computed sequential from each of its 4 layers, in the following order: 
+1. The **embedding layer** takes in the sequence of words and maps it to its integer representation in the vocabulary. In this model, our embedding layer has a dimension of 100.
+2. The **LSTM layer** captures the long-term dependencies in the sequential data. This is a blackbox layer because we used Pytorch’s implementation of LSTM. However, we know from prior knowledge that this layer will take in the embedded data and process it through a series of gates that control the flow and amount of information stored in the memory cells. This enables the LSTM layer to selectively remember or forget information from previous time steps and pass forward relevant information to future time steps.
+3. The **dropout layer** is a regularization technique used to prevent the model from overfitting. It works by randomly dropping out some activations during training, enabling the model to learn more robust features and become less sensitive to input noise. We used a dropout value of 0.3, meaning each of the activations in this layer have a 30% chance of being dropped out.
+4. The final fully connected *linear layer* uses a linear transformation to map the output of the previous layer to an output space with the size of our vocabulary. The output of this layer, in addition to the softmax activation in script generation, is used to obtain the final prediction from a distribution of probabilities.
+
+Figure 1 The architecture of the forward pass for the Spongebob LSTM model. The input is an 8-gram sequence, and the output is a vector representing the probability distribution over each word in the vocabulary, given the input sequence.
 
 ## Model Parameters:
 
 ## Model Examples:
+
+Our model did not use a test set to analyze its performance (more on this in “Data Split”). Instead, we measure the success of our model based on how reasonable the script generation is.
+One unsuccessful example from our model is the script generation from the prompt “beaches”. Here are the first few lines of a script generated from this prompt:
+
+beaches where. 
+squidward: [ gasps as he is heard ] 
+mr. krabs: [ gasps ] what's that? 
+spongebob: no way, patrick, we'll never get the little twerp more, spongebob. 
+spongebob: oh, yeah, i'm the most amazing! 
+patrick: i can't believe that award was just a little dry! 
+
+Clearly, the starting word became obsolete after its initial use. In fact, there is no other mention of beaches or anything related to them in the remainder of the script. 
+
+One successful example from our model is the script generation from the prompt “spongebob”. These are the first few lines of a script generated from this prompt:
+
+spongebob looks patrick. ". 
+spongebob: [ screams and runs to the krusty krab. the little clown is still wandering in the process and down ] 
+squidward: [ gasps ] what do you know. i've got a krabby patty deluxe! [ laughs ] 
+mr. krabs: i'm a genius. 
+spongebob: i have a good time, mr. krabs! 
+mr. krabs: oh, i've been taught your new dishwasher, you dunce.
+[ mr. krabs laughs. ] 
+spongebob: hey, squidward!  
+
+We can see from this example that Spongebob makes an appearance at the beginning of the episode, and the model remembered that he is still there after other characters are talking.
 
 ## Data Source:
 
