@@ -22,6 +22,7 @@ The architecture of this model is shown visually in Figure 1 below. The forward 
 <ins>Parameters</ins>:
 1. **vocab_size** - the number of unique words that appear in our training and validation set. It is also the size of our input, which is the number of features in our input.
 2. **output_size** - it is the same as the vocab size; however our output includes the probabilities for each word being the next one.
+
 <ins>Hyperparameters</ins>:
 3. **seq_length** - the length of the sequence for which the last word is being predicted by the model.
 4. **embedding_dim** - the size of the vectors to which our inputs (words) are being mapped
