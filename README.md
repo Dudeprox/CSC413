@@ -19,6 +19,20 @@ The architecture of this model is shown visually in Figure 1 below. The forward 
 
 ## Model Parameters:
 
+<ins>Parameters</ins>:
+1. **vocab_size** - the number of unique words that appear in our training and validation set. It is also the size of our input, which is the number of features in our input.
+2. **output_size** - it is the same as the vocab size; however our output includes the probabilities for each word being the next one.
+<ins>Hyperparameters</ins>:
+3. **seq_length** - the length of the sequence for which the last word is being predicted by the model.
+4. **embedding_dim** - the size of the vectors to which our inputs (words) are being mapped
+5. **hidden_dim** - the number of units in the hidden state of the LSTM layer
+6. **n_layers** - the number of stacked LSTMs 
+7. **dropout_rate** - the probability of a neuron being dropped in the dropout layer
+8. **batch_size** - the number of data points in one batch that is created by the data loader
+9. **num_epochs** - the number of completed iterations over the entire data set
+10. **weight_decay** - additional term which helps to prevent overfitting
+11. **learning_rate** - a rate at which the weights in our model are being updated
+
 ## Model Examples:
 
 Our model did not use a test set to analyze its performance (more on this in “Data Split”). Instead, we measure the success of our model based on how reasonable the script generation is.
@@ -85,6 +99,12 @@ We decided to use only a portion of the source data as the dataset was quite hug
 Even though we split our dataset into the training, validation, test sets, we don’t calculate test accuracy as this is not appropriate to our model. This is because our model is a generative model using RNNs. We create a vocabulary of unique words from the training and validation sets to train our model and further capture how it performs on the validation set. However, since the model is trained on the vocabulary from these two sets, it cannot be used on the test set. Since the test set is supposed to contain data that has never been seen before our model doesn’t have the vocabulary from the test set and therefore it would be inappropriate to use the model on the test set as it won’t be a good predictor of how our model performs in general. Moreover, since our model’s use case is to generate new scripts, again it’s not possible to use the test set to determine the model’s efficiency. Thus, we mainly use validation accuracy to judge our model's training process and we qualitatively measure the model's performance by judging the generated script.
 
 ## Training Curve:
+
+The learning curve shows that both validation and training accuracy grow rapidly from around 0-2000 iterations. After around 4000 iterations the validation accuracy plateaus; however the training accuracy keeps growing. Despite the fact that it might seem that the model starts to overfit, after judging our model based on qualitative measures we realised that this amount of iterations did not allow our model to capture some significant details. Moreover, the loss function is not very noisy and has a downward slope even after the 4000 iteration point.
+
+<img width="600" alt="Zrzut ekranu 2023-04-17 o 16 37 41" src="https://user-images.githubusercontent.com/71830457/232605202-7176d002-130e-4ef9-b5a6-365bfa141511.png">
+
+<img width="600" alt="Zrzut ekranu 2023-04-17 o 16 42 25" src="https://user-images.githubusercontent.com/71830457/232606204-603aa563-8820-4f32-96aa-8dbdd06757c0.png">
 
 ## Hyperparameter Tuning:
 
@@ -156,6 +176,16 @@ Implementing early stopping allowed the training accuracy to not be very high an
 The first line of the generated script is not coherent and does not form a structure of a typical script. After the first line, the model is able to form a script with reasonable structure and dialogue. This is likely due to the choice of the keyword, the model is unable to predict whether it should start from a script line, dialogue, or action, so the model generates the likely words before moving on to a script. The generated script is reasonably generated with good structure. Each character is named and followed by a colon before their dialogue and actions are generated. Hyperparameter tuning allowed the model to effectively place actions between square brackets and dialogue outside them. It is not always perfect, but it is consistent enough to be a reasonably structured script. The punctuation is also used appropriately, within sentences to construct a reasonable dialogue. The script is also more coherent, with most characters seeming to be conversing with other characters, about relevant topics. The conversations make sense most of the time, but occasionally some characters may appear to be conversing with themselves or referring to themselves. Other than some small discrepancies, character dialogue is reasonable. The model is also able to distinguish between the personalities of certain characters. For example, SpongeBob is a cheery character so he is laughing frequently, whereas Squidward is pessimistic and miserable, which is apparent in his tone and dialogue in the generated scripts. Overall, the model does a well enough job of recognizing the differences between characters. The model also only uses characters' names that are part of the show, to associate dialogue, therefore has an understanding of which characters frequently engage in dialogue. The end of the script usually appears cut off, and incomplete which is likely due to the length inputted. The model is unable to effectively conclude the episode and seems to create an infinite script. A hypothesis for this outcome could be, the model needs a specific length to conclude an episode, but since multiple episodes range in length and some episodes don't even indicate an ending, it could be very difficult for the model to mention an ending. 
 
 ## Ethical Considerations:
+
+<ins>Copyright laws</ins>:
+
+A very important issue to consider when developing such AI tools is the one of copyright laws. Since our generator learns based on previously created work, there is a consideration to be made about the ownership of the scripts created by our model. From that observation we can say that the ownership should be given to the original creators of Spongebob, since their creative work was used to train the model. However, we could also say that the work should be owned by those who created the model or should not be owned by anyone. Different countries have different laws around the ownership of “creative” work generated by AI tools. For instance, the Court of Justice of the European Union has stated that copyright can only be granted based on “author’s own intellectual creation.” This is usually recognized as a necessity for a human author, thus not allowing the creators of the model to make copyright claims. On the other hand, the UK’s copyright law states that “In the case of a literary, dramatic, musical or artistic work which is computer-generated, the author shall be taken to be the person by whom the arrangements necessary for the creation of the work are undertaken.”
+Which could be understood as potentially granting copyright to both the authors of the original script and the creators of the model. Canada’s Copyright Act states that copyright can only be granted for “original work” which “must not be so trivial that it could be characterized as a purely mechanical exercise.” Additionally, Canada currently has no laws that address potential commercial use of work generated by AI. Since different countries have different views and laws concerning AI generated work, it is important to acquaint ourselves with existing laws. At the same time we should also be aware of the fact that in some cases existing laws do not cover all grounds that need to be considered to ensure that our model is being used in an ethical way.  
+
+<ins>Problematic results</ins>:
+
+Another important issue that should be considered is the potential of generating scripts whose tone does not agree with our values and can be deemed unethical. Since we have little input into what the script will generate, it could create scripts that are insensitive and harmful. For instance, in one of the examples shown above squidward mentions taking his own life, which is inappropriate to include in a children’s show. For this reason, we have to ensure that we are equipped with tools that can moderate such generated scripts. It would be important to make sure that our script goes through such a moderating tool before being used further and is also moderated by a human writer. Such filtering steps will help us moderate the content we produce and make sure that the scripts we generate are not harmful. Since our model asks for the first word in the script before generating, it is important to note that this feature could additionally be used to generate offensive responses. To prove that this was an issue, when our generator was prompted with the word ‘kill’, it generated an inappropriate script with themes of murder. Thus, we should ensure that the moderating steps are added before using any scripts further.
+
 
 ## Authors:
 
