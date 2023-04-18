@@ -158,6 +158,12 @@ Below is a table that summarizes the various combinations of hyperparameter valu
 
 ## Quantitative Measures:
 
+The quantitative measures we used to evaluate our model were the **training accuracy, validation accuracy and loss**. 
+
+Firstly, the **training accuracy** was used to evaluate whether our model was correctly implemented and could perform well after appropriate hyperparameter tuning. We decided to first try overfitting it to a small data set. Once we managed to obtain 99% training accuracy on a data set containing just one file, we moved on to tuning the hyperparameters for the whole data set and evaluating our model. Then we used the **validation accuracy and loss** to evaluate how our model was performing for specific hyperparameters. 
+
+Since the main premise of our project was to create a model that would generate scripts, we decided to not include test accuracy as one of the measures. Since the problem we decided to tackle with our model is very complex and there are a lot of words in our vocabulary, we knew that it would be incredibly hard for our model to predict the next word in a sequence correctly and give a high accuracy, especially for a never seen before test set. Moreover, we wanted to measure our model's performance based on how well it generated new scripts rather than making predictions, thus we decided not to evaluate it based on the test set, but rather some qualitative measures applied to the newly generated script. 
+
 ## Quantitative and Qualitative Results:
 
 ## Justification of Results:
