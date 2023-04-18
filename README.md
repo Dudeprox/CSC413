@@ -164,7 +164,17 @@ Firstly, the **training accuracy** was used to evaluate whether our model was co
 
 Since the main premise of our project was to create a model that would generate scripts, we decided to not include test accuracy as one of the measures. Since the problem we decided to tackle with our model is very complex and there are a lot of words in our vocabulary, we knew that it would be incredibly hard for our model to predict the next word in a sequence correctly and give a high accuracy, especially for a never seen before test set. Moreover, we wanted to measure our model's performance based on how well it generated new scripts rather than making predictions, thus we decided not to evaluate it based on the test set, but rather some qualitative measures applied to the newly generated script. 
 
-## Quantitative and Qualitative Results:
+## Quantitative Results:
+
+When overfitting to a small data set we obtained a training accuracy of 99% which suggested that our model was correctly implemented and had a potential to work well while generating our scripts.
+
+Our final model had a training accuracy of 38%, validation accuracy of 29% and loss of 3.260938, which is a good result considering the complexity of our problem. Additionally, looking at the shapes of our curves, we can see that the validation accuracy plateaus at around 4000 iterations while the training accuracy continues to grow. Even though the validation accuracy plateaus and the training accuracy keeps growing it may seem that our model starts to overfit around 4000 iterations. However, when training our model on a smaller number of iterations, based on qualitative results, we noticed that our model was unable to capture important information, e.g. encapsulating actions in brackets, thus we decided to train our model with more iterations. Moreover, the loss curve keeps going down after the 4000 iterations, thus we continued training our model.
+
+<ins>Words per line:</ins>
+
+When for one of the generated scripts we calculated the average of words per line we got a result of an average of 12 words per line compared to 16 as stated in the data summary.
+
+## Qualitative Results:
 
 ## Justification of Results:
 
