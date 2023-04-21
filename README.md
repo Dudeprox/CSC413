@@ -251,6 +251,86 @@ While the grammar is generally correct, there are still some errors in sentence 
 
 ## Qualitative Results:
 
+After generating a few episodes we decided to evaluate our model based on some qualitative measures we noticed in our scripts. All these results are based on the generated scripts of length 600. Three of them are available to view in our notebook.
+
+### Structure of the scripts
+
+First, we wanted to see whether the general structure of our script was coherent and resembled the structure of an existing spongebob episode. We compared our generated scripts to the ones from our data set. We noticed that our model captured the structure well. 
+
+Since the first line of our script includes the provided keyword, it does not resemble the first lines included in the training episodes. Additionally, it is usually neither an action sequence nor a beginning of a dialogue.
+
+Example of a first line from a script starting with a word "spongebob":
+**spongebob looks patrick. ".**
+
+Since we provide our generator with the length of the script, the scripts do not have coherent endings and often end mid through sentence/action. 
+
+Example of a last line from a script starting with a word "spongebob":
+**[ mr .**
+
+We also noticed that sometimes the generated script did not recognize the start/ending of the episode and included a starting action in the middle of one of our episodes.
+
+Example from a script starting with a word “spongebob”:
+
+squidward: [ laughs ] what? what's your house, you're going to go to work! i've been in a krabby patty. 
+
+spongebob: i'll never find you. 
+
+**[ the episode begins in spongebob's house. spongebob walks out of the krusty krab ]**
+
+spongebob: [ screams ] 
+
+squidward: what are you doing here?
+
+Each new line (excluding the first line which includes the starting word) starts with either a new character dialogue or a new action. Each dialogue starts with a name of a character that’s currently speaking followed by a ‘:’ character and that character’s line. Sometimes dialogues also include actions. Each action statement is encapsulated in square brackets.
+
+**Part of our generated scripts:**
+
+<img width="702" alt="Zrzut ekranu 2023-04-21 o 15 04 14" src="https://user-images.githubusercontent.com/71830457/233715035-437cc93c-8486-4677-b1bc-2ba2a4e9c240.png">
+
+**Part of one of the train episodes:**
+
+<img width="1069" alt="Zrzut ekranu 2023-04-21 o 15 05 07" src="https://user-images.githubusercontent.com/71830457/233715172-ef1a61e5-ff06-4044-ab44-56f66ccbc578.png">
+
+### Characters
+
+The characters that are included in our generated scripts, are actual characters from Spongebob and each episode includes a variety of characters, such as spongebob, mr.krabs, squidward, patrick and plankton. However, the scripts rarely include characters outside of the main cast or original characters.
+
+Sometimes it seems like the model does not recognise that a character with the same name is the same character. For instance, it generates a part of dialogue in which a character has a conversation with another character of the same name, rather than a conversation with themselves. 
+
+spongebob: i know, you can't believe it's the krusty krab. 
+
+spongebob: i know, spongebob? [ patrick goes into a realistic sea chimps ]
+
+We also noticed that in our scripts, the main characters have similar characteristics to the original show. For instance, Spongebob uses happy language and laughs a lot , while squidward is usually sad and down. However, since our scripts mostly focused on the main characters, it was hard to explore the characteristics of multiple different characters that are present in the original show.
+
+### Actions
+
+Each action includes either one word/short phrase of action, e.g. laughs, screams, gasps or a longer action. However, the actions sometimes miss brackets in the front or in the back or are misplaced. The actions included in our script mostly relate to the current situation presented in the script. 
+
+An action that conveys shock of seeing something unrecognizable: **mr. krabs: [ gasps ] what's that?**
+
+A fearful reaction (scream) to seeing an imaginary wil animal (cattywampus): **spongebob: [ screams ] oh, that's a little cattywampus.**
+
+Change of scene action: **[ the scene changes to the krusty krab ]**
+
+We also noticed that actions sometimes seem unfinished; however most of the time they entail a coherent whole.
+
+**[ patrick's house rolls into the krusty krab where he is in his house and he's not. ]**
+
+### Punctuation
+
+Punctuation is included in our scripts and most of the time it is placed appropriately. Sentences end with a dot/exclamation/question mark. Additionally, the generator is mostly correct when placing commas.
+
+#### Question marks
+
+Correctly used at the end of a question: **mr. krabs: [ gasps ] what's that?**
+
+Incorrectly used question mark: **patrick: i'm not a little unscrupulous a little bit?**
+
+#### Exclamation marks
+
+Are correctly used to show exclamation: **patrick: i can't do it! [ laughs ] i don't need it!**
+
 ## Justification of Results:
 
 ### Problem Complexity: 
