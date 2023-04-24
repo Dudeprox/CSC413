@@ -2,20 +2,23 @@
 
 ## Introduction:
 
-For this project, our task was to generate a script that mimics the style and humour of the popular animated TV show Spongebob Squarepants. We accomplished this task by utilizing a long-short-term-memory (LTSM) network. LSTMs are designed to capture long-term dependencies in sequential data, and can effectively generate scripts coherent text that follows the grammar and syntax of natural language.
-The input to our model is a starting word and a specified length for the generated script. The starting word serves as a prompt for the model to generate the script from, and the length indicates how many words the model should produce (where punctuation marks also count as words). With these inputs, the model was able to output a generated script with the desired length and the first word being the prompt given to it.
+For this project, our task was to develop a model that could generate a script that mimics the style and humour of the popular animated TV show Spongebob Squarepants. We accomplished this task by utilizing a long-short-term-memory (LTSM) network, a type of recurrent neural network (RNN) that is designed to capture long-term dependencies in sequential data. Due to their ability to model the complex relationships between words in a sentence, LSTMs can effectively generate coherent text that follows the grammar and syntax of natural language.
+
+The inputs to our model consist of a starting word and a specified length for the generated script. The starting word will be the word from which script generation begins, and the length indicates the total number of words that the model should produce, including punctuation marks. From these inputs, the model outputs a sequence of words (i.e., the generated script) that begins with the specified word and ends after the desired word count has been reached.
+
 
 ## Model Figure:
 
-The architecture of this model is shown visually in Figure 1 below. The forward pass of the model is computed sequential from each of its 4 layers, in the following order: 
-1. The **embedding layer** takes in the sequence of words and maps it to its integer representation in the vocabulary. In this model, our embedding layer has a dimension of 100.
-2. The **LSTM layer** captures the long-term dependencies in the sequential data. This is a blackbox layer because we used Pytorch’s implementation of LSTM. However, we know from prior knowledge that this layer will take in the embedded data and process it through a series of gates that control the flow and amount of information stored in the memory cells. This enables the LSTM layer to selectively remember or forget information from previous time steps and pass forward relevant information to future time steps.
-3. The **dropout layer** is a regularization technique used to prevent the model from overfitting. It works by randomly dropping out some activations during training, enabling the model to learn more robust features and become less sensitive to input noise. We used a dropout value of 0.3, meaning each of the activations in this layer have a 30% chance of being dropped out.
-4. The final fully connected *linear layer* uses a linear transformation to map the output of the previous layer to an output space with the size of our vocabulary. The output of this layer, in addition to the softmax activation in script generation, is used to obtain the final prediction from a distribution of probabilities.
+Figure 1 below illustrates the flow of data through each layer of our model during the forward pass. There are four types of layers involved, which are executed in the following order: 
+1. The **embedding layer** takes in an 8-gram sequence of words from an actual Spongebob script and maps each word to its integer representation in the vocabulary. 
+2. Each of the two **LSTM layers** is composed of several memory cells that store relevant information from the embedded data (for the first layer) and the output of the first LSTM layer (for the second layer). These layers also contain a series of gates that control the information flow through these cells. The forget gate will selectively discard irrelevant information from previous time steps, the input gate will allow relevant information to enter the current cell state, and the output gate will pass forward relevant information to future time steps. 
+Note: The specific implementation of these layers is a blackbox because our model draws from Pytorch’s pre-built LSTM implementation. However, we know how this layer should function based on our prior knowledge of the expected structure and behaviour of LSTMs. 
+3. The **dropout layer** will randomly drop out a percentage of the activations from the LSTM layer. This is a regularization technique used to prevent the model from overfitting by forcing it to learn more robust features. Our model performed best with a dropout value of 0.3, meaning each activation in the LSTM layer has a 30% chance of being dropped out.
+4. The final fully connected linear layer uses a linear transformation to map the output of the last LSTM layer to an output space that is scaled to the size of our vocabulary. The output of this layer is used to obtain a distribution of probabilities for each vocabulary word. When the softmax activation function is applied during script generation, the final prediction is obtained by selecting one of the words with the highest probability. 
 
 <img width="643" alt="image" src="https://user-images.githubusercontent.com/56453971/232602341-1d71a86e-5613-427a-87aa-f066fa2c1d9e.png">
 
-**Figure 1:** The architecture of the forward pass for the Spongebob LSTM model. The input is an 8-gram sequence, and the output is a vector representing the probability distribution over each word in the vocabulary, given the input sequence.
+**Figure 1:** Architecture of the forward pass in the Spongebob LSTM model. The input sequence is embedded through an embedding layer, then processed through two LSTM layers, one dropout layer, and one fully connected layer to generate the output sequence.
 
 ## Model Parameters:
 
@@ -38,20 +41,27 @@ The architecture of this model is shown visually in Figure 1 below. The forward 
 
 ## Model Examples:
 
-Our model did not use a test set to analyze its performance (more on this in “Data Split”). Instead, we measure the success of our model based on how reasonable the script generation is.
+Our model did not use a test set to analyze its performance (more on this in “Data Split”). Instead, we measured the success of our model based on how well it can generate a script that resembles the style and humour of an actual episode of Spongebob Squarepants.
 One unsuccessful example from our model is the script generation from the prompt “beaches”. Here are the first few lines of a script generated from this prompt:
-
+```
 beaches where. 
 squidward: [ gasps as he is heard ] 
 mr. krabs: [ gasps ] what's that? 
 spongebob: no way, patrick, we'll never get the little twerp more, spongebob. 
-spongebob: oh, yeah, i'm the most amazing! 
-patrick: i can't believe that award was just a little dry! 
-
-Clearly, the starting word became obsolete after its initial use. In fact, there is no other mention of beaches or anything related to them in the remainder of the script. 
+```
+In this text, the starting word became obsolete after its initial use; there is no other mention of beaches or anything related to them in the remainder of the generated script. This shows that the model did not learn to connect the idea of “beaches” with other beach-related items. 
+After about fifteen lines of generated script, there is still no clear sense of direction, despite the model now having some more context for the scene:
+```
+[ the scene changes to squidward, squidward is seen sleeping by a horse. ] 
+mr. krabs: [ chuckles and throws it on the table ] i'll be a little unscrupulous good. 
+[ patrick and squidward run off, and spongebob and patrick are in the air with his tongue ] 
+spongebob: i know, you can't believe it's the krusty krab. 
+spongebob: i know, spongebob? [ patrick goes into a realistic sea chimps ] 
+```
+The lines spoken by each character are not related to one another, and some parts of the text do not make any sense. As such, the script generated from this prompt was not successful at generated a realistic Spongebob Squarepants script.
 
 One successful example from our model is the script generation from the prompt “spongebob”. These are the first few lines of a script generated from this prompt:
-
+```
 spongebob looks patrick. ". 
 spongebob: [ screams and runs to the krusty krab. the little clown is still wandering in the process and down ] 
 squidward: [ gasps ] what do you know. i've got a krabby patty deluxe! [ laughs ] 
@@ -60,8 +70,9 @@ spongebob: i have a good time, mr. krabs!
 mr. krabs: oh, i've been taught your new dishwasher, you dunce.
 [ mr. krabs laughs. ] 
 spongebob: hey, squidward!  
+```
+In this example, Spongebob makes an appearance at the start of the script by speaking in the second line. Moreover, while the script starts off with some syntax errors, we see that there is some back and forth between the characters in a reasonable dialogue. The overall sentence structure and use of punctuation marks has also improved from the previous example.
 
-We can see from this example that Spongebob makes an appearance at the beginning of the episode, and the model remembered that he is still there after other characters are talking.
 
 ## Data Source:
 
@@ -372,6 +383,15 @@ Another important issue that should be considered is the potential of generating
 
 * Worked on the script generation function.
 * In the write-up I worked on Justification of Results.
+
+#### Zosia Kniter
+* Worked on functions for accuracy and training
+* In the write-up I worked on Model Parameters, Training Curve, Quantitative Measures, and Ethical Considerations
+
+#### Samantha Skeels
+
+* Worked on the functons for accuracy and training; helped tune hyperparameters of the final model
+* In the write-up I worked on Introduction, Model Figure, and Model Examples
 
 ## Advanced Concept:
 
