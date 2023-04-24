@@ -390,7 +390,7 @@ Another important issue that should be considered is the potential of generating
 
 #### Samantha Skeels
 
-* Worked on the functons for accuracy and training; helped tune hyperparameters of the final model
+* Worked on the functons for accuracy and training; helped tune hyperparameters; created code for data statistics
 * In the write-up I worked on Introduction, Model Figure, and Model Examples
 
 ## Advanced Concept:
