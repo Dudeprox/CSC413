@@ -384,9 +384,9 @@ Another important issue that should be considered is the potential of generating
 * Worked on the script generation function.
 * In the write-up I worked on Justification of Results.
 
-#### Zosia Kniter
+#### Zofia Kniter
 * Worked on functions for accuracy and training
-* In the write-up I worked on Model Parameters, Training Curve, Quantitative Measures, and Ethical Considerations
+* In the write-up I worked on Model Parameters, Training Curve, Quantitative Measures, Quantitative and Qualitative Results and Ethical Considerations
 
 #### Samantha Skeels
 
